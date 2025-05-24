@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import json
+import os
 
 app = FastAPI()
 
@@ -14,8 +15,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load marks.json once at startup
-with open("marks.json") as f:
+# Use full path to marks.json relative to current file
+json_path = os.path.join(os.path.dirname(__file__), "marks.json")
+with open(json_path) as f:
     students = json.load(f)
 marks_map = {s["name"]: s["marks"] for s in students}
 
